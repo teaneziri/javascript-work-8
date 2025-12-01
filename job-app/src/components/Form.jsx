@@ -15,9 +15,9 @@ const Form = () => {
   
     const [user, setUser] = useState({
         name: '',
-        age: '', 
+        age: 0, 
         profession: '',
-        yearsOfExperience: '', 
+        yearsOfExperience: null, 
         employmentStatus: false 
     });
 
@@ -28,7 +28,7 @@ const Form = () => {
 
   
 
-    // Validation Logic
+    // Validation
     const validate = () => {
         let tempErrors = {};
         let isValid = true;
@@ -39,7 +39,7 @@ const Form = () => {
         }
         
         if (user.age < 18) {
-            tempErrors.age = 'Applicants must be 18 years of age or older.';
+            tempErrors.age = 'Applicants must be 18 years or older.';
             isValid = false;
         }
 
