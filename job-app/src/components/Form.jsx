@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 
+{/*Detyra e shtepise:
+Krijojeni nje komponente te re qe do ket nje forme ku pranon keto vlera:
+Full Name
+Age
+Profession
+Vjet eksperience
+Emploment status
+Forma duhet te kontrollohet permes state dhe duhet te ket validim(nuk pranohen vlera boshe)
+Pasi forma te behet submit, poshte formes te listohen Aplikuesit per pune(nga te dhenat e formes) ne menyre dinamike
+Tek lista e aplikuesve te jete opsioni delete ne menyre qe te largohet aplikuesi nga lista*/}
 const Form = () => {
     
   
