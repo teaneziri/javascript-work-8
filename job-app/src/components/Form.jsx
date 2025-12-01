@@ -54,14 +54,14 @@ const Form = () => {
         
         setUser(previousValue => ({
             ...previousValue,
-            // Convert 'number' inputs to actual numbers for state
+           
             [name]: type === 'checkbox' ? checked : (type === 'number' ? Number(value) : value),
         }));
         
-        // **LOGIC REMOVED:** Error state is NO LONGER cleared here.
+       
     };
 
-    // Submission Handler
+   
     const handleSubmit = (e) => {
         e.preventDefault();
         
@@ -73,7 +73,7 @@ const Form = () => {
 
             setApplicants(prevUsers => [...prevUsers, newUser]);
             
-            // Reset the form inputs
+           
             setUser({
                 name: '',
                 age: 0,
@@ -86,21 +86,21 @@ const Form = () => {
         }
     };
     
-    // Deletion Handler
+  
     const handleDeleteUser = (userId) => {
         setApplicants(prevUsers => prevUsers.filter(user => user.id !== userId));
     };
 
 
-    // --- RENDER ---
+    
     return (
         <div className="max-w-xl mx-auto mt-10">
             
-            {/* 1. REGISTRATION FORM */}
+           
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6 border rounded shadow-md bg-gray-50">
                 <h2 className="text-xl font-bold text-gray-700">Register New User</h2>
 
-                {/* Name Input */}
+              
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Name</label>
                     <input 
@@ -112,7 +112,7 @@ const Form = () => {
                     {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                 </div>
                 
-                {/* Age Input */}
+                
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Age</label>
                     <input 
@@ -125,7 +125,7 @@ const Form = () => {
                     {errors.age && <p className="text-red-500 text-xs mt-1">{errors.age}</p>}
                 </div>
 
-                {/* Profession Input */}
+               
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Profession</label>
                     <input 
@@ -138,7 +138,7 @@ const Form = () => {
                     {errors.profession && <p className="text-red-500 text-xs mt-1">{errors.profession}</p>}
                 </div>
 
-                {/* Years of Experience Select */}
+               
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
                     <select 
@@ -156,7 +156,7 @@ const Form = () => {
                     {errors.yearsOfExperience && <p className="text-red-500 text-xs mt-1">{errors.yearsOfExperience}</p>}
                 </div>
 
-                {/* Checkbox */}
+               
                 <div className="flex items-center gap-2">
                     <input 
                         type="checkbox" 
@@ -173,7 +173,7 @@ const Form = () => {
                 </button>
             </form>
 
-            {/* 2. REGISTERED USERS LIST (CONDITIONAL RENDERING) */}
+            {/* Registered users list  */}
             {applicants.length > 0 && (
                 <div className="mt-10 p-6 border rounded shadow-md bg-white">
                     <h2 className="text-xl font-bold mb-4 text-gray-700">Applicants ({applicants.length})</h2>
