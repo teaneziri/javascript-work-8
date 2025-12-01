@@ -39,7 +39,7 @@ const Form = () => {
         }
         
         if (user.age < 18) {
-            tempErrors.age = 'Age must be a valid number';
+            tempErrors.age = 'Applicants must be 18 years of age or older.';
             isValid = false;
         }
 
@@ -59,17 +59,16 @@ const Form = () => {
     };
 
    
+   
     const handleChange = (event) => {
-        const { name, value, type, checked } = event.target;
-        
-        setUser(previousValue => ({
-            ...previousValue,
-           
-            [name]: type === 'checkbox' ? checked : (type === 'number' ? Number(value) : value),
-        }));
-        
-       
-    };
+    setUser(prevUser => ({
+        ...prevUser,
+        [event.target.name]: event.target.type === 'checkbox' 
+            ? event.target.checked 
+            : event.target.value
+    }));
+};
+
 
    
     const handleSubmit = (e) => {
@@ -86,7 +85,7 @@ const Form = () => {
            
             setUser({
                 name: '',
-                age: 0,
+                age: '',
                 profession: '',
                 yearsOfExperience: '',
                 employmentStatus: false
