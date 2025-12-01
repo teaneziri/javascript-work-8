@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 
 const Form = () => {
-   
+    
+  
     const [user, setUser] = useState({
         name: '',
+        age: '', 
+        profession: '',
         yearsOfExperience: '', 
         employmentStatus: false 
     });
 
     const [errors, setErrors] = useState({});
     
-    const [applicants, setApplicants] = useState([]);
+    const [applicants, setApplicants] = useState([]); 
 
 
-    // --- HANDLERS & LOGIC ---
+  
 
     // Validation Logic
     const validate = () => {
@@ -24,6 +27,18 @@ const Form = () => {
             tempErrors.name = 'Name is required and must be at least 3 characters.';
             isValid = false;
         }
+        
+        if (user.age < 18) {
+            tempErrors.age = 'Age must be a valid number';
+            isValid = false;
+        }
+
+       
+        if (!user.profession || user.profession.length < 2) {
+            tempErrors.profession = 'Profession is required.';
+            isValid = false;
+        }
+
         if (user.yearsOfExperience === '') {
             tempErrors.yearsOfExperience = 'Please select your years of experience.';
             isValid = false;
@@ -33,42 +48,36 @@ const Form = () => {
         return isValid;
     };
 
-    // Universal Change Handler
+   
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
         
         setUser(previousValue => ({
             ...previousValue,
-            [name]: type === 'checkbox' ? checked : value,
+            // Convert 'number' inputs to actual numbers for state
+            [name]: type === 'checkbox' ? checked : (type === 'number' ? Number(value) : value),
         }));
         
-        // Clear error when user starts typing/selecting
-        if (errors[name]) {
-            setErrors(prevErrors => {
-                const newErrors = { ...prevErrors };
-                delete newErrors[name];
-                return newErrors;
-            });
-        }
+        // **LOGIC REMOVED:** Error state is NO LONGER cleared here.
     };
 
-    // Submission Handler (Adds new user to the list)
+    // Submission Handler
     const handleSubmit = (e) => {
         e.preventDefault();
         
         if (validate()) {
-            // 1. Create a new user object with a unique ID
             const newUser = {
-                id: Date.now(), // Use timestamp for a simple unique ID
+                id: Date.now(), 
                 ...user
             };
 
-            // 2. Add the new user to the 'users' list
             setApplicants(prevUsers => [...prevUsers, newUser]);
             
-            // 3. Reset the form inputs
+            // Reset the form inputs
             setUser({
                 name: '',
+                age: 0,
+                profession: '',
                 yearsOfExperience: '',
                 employmentStatus: false
             });
@@ -79,16 +88,15 @@ const Form = () => {
     
     // Deletion Handler
     const handleDeleteUser = (userId) => {
-        // Filter out the user with the matching ID
         setApplicants(prevUsers => prevUsers.filter(user => user.id !== userId));
     };
 
 
     // --- RENDER ---
-   return (
+    return (
         <div className="max-w-xl mx-auto mt-10">
             
-            {/* 1. REGISTRATION FORM (Always visible) */}
+            {/* 1. REGISTRATION FORM */}
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6 border rounded shadow-md bg-gray-50">
                 <h2 className="text-xl font-bold text-gray-700">Register New User</h2>
 
@@ -102,6 +110,32 @@ const Form = () => {
                         className={`border w-full p-2 rounded ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                     />
                     {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                </div>
+                
+                {/* Age Input */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Age</label>
+                    <input 
+                        type="number" 
+                        name='age' 
+                        value={user.age}
+                        onChange={handleChange} 
+                        className={`border w-full p-2 rounded ${errors.age ? 'border-red-500' : 'border-gray-300'}`}
+                    />
+                    {errors.age && <p className="text-red-500 text-xs mt-1">{errors.age}</p>}
+                </div>
+
+                {/* Profession Input */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Profession</label>
+                    <input 
+                        type="text" 
+                        name='profession' 
+                        value={user.profession}
+                        onChange={handleChange} 
+                        className={`border w-full p-2 rounded ${errors.profession ? 'border-red-500' : 'border-gray-300'}`}
+                    />
+                    {errors.profession && <p className="text-red-500 text-xs mt-1">{errors.profession}</p>}
                 </div>
 
                 {/* Years of Experience Select */}
@@ -139,8 +173,7 @@ const Form = () => {
                 </button>
             </form>
 
-            {/*Registered users list */}
-          
+            {/* 2. REGISTERED USERS LIST (CONDITIONAL RENDERING) */}
             {applicants.length > 0 && (
                 <div className="mt-10 p-6 border rounded shadow-md bg-white">
                     <h2 className="text-xl font-bold mb-4 text-gray-700">Applicants ({applicants.length})</h2>
@@ -152,9 +185,12 @@ const Form = () => {
                                 className="flex justify-between items-center p-3 border-b last:border-b-0 bg-gray-50 rounded"
                             >
                                 <div>
-                                    <p className="font-semibold">{item.name}</p>
+                                    <p className="font-semibold">{item.name} ({item.age})</p>
                                     <p className="text-sm text-gray-600">
-                                        Exp: {item.yearsOfExperience}+ | Status: {item.employmentStatus ? 'Employed' : 'Unemployed'}
+                                        Profession: {item.profession} | Exp: {item.yearsOfExperience}+ 
+                                    </p>
+                                    <p className="text-sm text-gray-600">
+                                        Status: {item.employmentStatus ? 'Employed' : 'Unemployed'}
                                     </p>
                                 </div>
                                 <button
